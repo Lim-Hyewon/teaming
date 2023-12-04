@@ -146,6 +146,7 @@ void searchPosts(GtkWidget *widget, gpointer data) {
                                              NULL);
         gtk_dialog_set_default_response(GTK_DIALOG(dialog), GTK_RESPONSE_ACCEPT);
 
+
         // 그리드를 다이얼로그에 추가
         grid = gtk_grid_new();
         gtk_grid_set_column_spacing(GTK_GRID(grid), 10);

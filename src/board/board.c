@@ -1,38 +1,13 @@
-#include <gtk/gtk.h>
-#include <stdio.h>
-#include <locale.h>
-#include <ctype.h>
-#include <string.h>
+#include "board.h"
 
-#define MAX_POSTS 100
-#define MAX_TITLE 100
-#define MAX_CONTENT 500
 
-typedef struct {
-    char title[MAX_TITLE];
-    char content[MAX_CONTENT];
-    char author[MAX_TITLE];
-} Post;
-
-Post posts[MAX_POSTS];
+post_t posts[MAX_POSTS];
 int postCount = 0;
-
-void writePost(GtkWidget *widget, gpointer data);
-void readPosts(GtkWidget *widget, gpointer data);
-void searchPosts(GtkWidget *widget, gpointer data);
-char *strstr_case_insensitive_word(const char *haystack, const char *needle);
-void editPost(GtkWidget *widget, gpointer data);
-void deletePost(GtkWidget *widget, gpointer data);
-void saveEdit(GtkWidget *widget, gpointer data);
-void saveData();
-void loadData();
 
 GtkWidget *titleEntry, *contentEntry, *authorEntry, *outputLabel, *keywordEntry;
 
-int main(int argc, char *argv[]) {
+void bulletinBoard(GtkWidget *widget, gpointer data) {
     setlocale(LC_ALL, "");
-
-    gtk_init(&argc, &argv);
 
     GtkWidget *window, *box, *button, *grid, *label;
 
@@ -93,13 +68,11 @@ int main(int argc, char *argv[]) {
 
     gtk_widget_show_all(window);
     gtk_main();
-
-    return 0;
 }
 
 void writePost(GtkWidget *widget, gpointer data) {
     if (postCount < MAX_POSTS) {
-        Post newPost;
+        post_t newPost;
         const gchar *title = gtk_entry_get_text(GTK_ENTRY(titleEntry));
         const gchar *content = gtk_entry_get_text(GTK_ENTRY(contentEntry));
         const gchar *author = gtk_entry_get_text(GTK_ENTRY(authorEntry));
@@ -300,7 +273,7 @@ void deletePost(GtkWidget *widget, gpointer data) {
 }
 
 void saveData() {
-    FILE *file = fopen("posts.txt", "w");
+    FILE *file = fopen("./data/posts.txt", "w");
     if (file != NULL) {
         for (int i = 0; i < postCount; ++i) {
             fprintf(file, "%s\n%s\n%s\n", posts[i].title, posts[i].content, posts[i].author);
@@ -313,7 +286,7 @@ void loadData() {
     // 기존의 데이터 초기화
     postCount = 0;
 
-    FILE *file = fopen("posts.txt", "r");
+    FILE *file = fopen("./data/posts.txt", "r");
     if (file != NULL) {
         while (fscanf(file, "%99[^\n]\n%499[^\n]\n%99[^\n]\n", posts[postCount].title, posts[postCount].content, posts[postCount].author) == 3) {
             postCount++;

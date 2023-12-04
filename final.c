@@ -25,6 +25,8 @@ void createTeam();
 void logout();
 void exitProgram();
 void updateUIAfterLogin(GtkWidget *window);
+void bulletinboard(GtkWidget *widget, gpointer data);
+
 
 // 회원가입, 로그인, 팀 생성 및 프로그램 종료 버튼에 대한 선언
 static void register_button_clicked(GtkWidget *widget, gpointer data);
@@ -775,10 +777,10 @@ void loadData();
 
 GtkWidget *titleEntry, *contentEntry, *authorEntry, *outputLabel, *keywordEntry;
 
-void bulletinboard() {
+void bulletinboard(GtkWidget *widget, gpointer data) {
     setlocale(LC_ALL, "");
 
-    gtk_init(0, "");
+    // gtk_init(0, "");
 
     GtkWidget *window, *box, *button, *grid, *label;
 
